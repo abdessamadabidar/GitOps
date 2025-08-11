@@ -1,0 +1,50 @@
+# Backend Deployment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecommback
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ecommappback
+  template:
+    metadata:
+      labels:
+        app: ecommappback
+    spec:
+      containers:
+        - name: backcontainer
+          image: abdessamadabidar/ecomm.ci.cd.back:0.0.1.61
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: ecommconfig
+          env:
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: ecommsecret
+                  key: db-username
+
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ecommsecret
+                  key: db-password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecommbacksvc
+spec:
+  selector:
+    app: ecommappback
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+

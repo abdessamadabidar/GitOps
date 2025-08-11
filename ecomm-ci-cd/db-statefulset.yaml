@@ -1,0 +1,52 @@
+# Postgres StatefulSet
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ecommdb
+spec:
+  selector:
+    matchLabels:
+      app: ecommappdb
+  serviceName: ecommdbsvc
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ecommappdb
+    spec:
+      containers:
+        - name: dbcontainer
+          image: postgres
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: ecommconfig
+                  key: POSTGRES_DB
+
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: ecommsecret
+                  key: db-username
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ecommsecret
+                  key: db-password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecommdbsvc
+spec:
+  clusterIP: None          
+  selector:
+    app: ecommappdb        
+  ports:
+    - port: 5432
+      targetPort: 5432

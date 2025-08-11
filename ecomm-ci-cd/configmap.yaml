@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ecommconfig
+data:
+  spring.datasource.url: jdbc:postgresql://ecommdbsvc:5432/ecommdb
+
+  app.data.number-of-customers: "100"
+  app.data.number-of-products: "50"
+  app.data.number-of-orders: "20"
+
+  spring.application.name: "ecomm-ci-cd"
+  spring.profiles.active: "dev"
+  server.port: "8080"
+  spring.graphql.cors.allowed-origins: "*"
+
+  POSTGRES_DB: "ecommdb"
+
+
+
+
+  
