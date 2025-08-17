@@ -14,9 +14,11 @@ spec:
       labels:
         app: ecommappback
     spec:
+      imagePullSecrets:
+        - name: ecr-registry-key
       containers:
         - name: backcontainer
-          image: abdessamadabidar/ecomm.ci.cd.back:0.0.1.61
+          image: ${AWS_ECR_BACK_REPO}:${BACK_IMAGE_TAG}
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
