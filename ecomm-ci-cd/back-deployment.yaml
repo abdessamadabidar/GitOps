@@ -18,7 +18,7 @@ spec:
         - name: ecr-registry-key
       containers:
         - name: backcontainer
-          image: 314146337686.dkr.ecr.us-east-1.amazonaws.com/ecomm.ci.cd.back:latest
+          image: 314146337686.dkr.ecr.us-east-1.amazonaws.com/ecomm.ci.cd.back:0.4.1-125
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
